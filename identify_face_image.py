@@ -18,6 +18,23 @@ classifier_filename = './class/classifier.pkl'
 npy='./npy'
 train_img="./train_img"
 
+directorioImagenesClasificadas ="./Clasificada"
+directorioImagenesReconocidas ="./Clasificada/Reconocidas"
+directorioImagenesDesconocidas ="./Clasificada/Desconocidas"
+
+
+
+
+try:
+  os.stat(directorioImagenesClasificadas)
+except:
+  os.mkdir(directorioImagenesClasificadas)
+  os.mkdir(directorioImagenesReconocidas)
+  os.mkdir(directorioImagenesDesconocidas)
+
+
+
+
 with tf.Graph().as_default():
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.6)
     sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False))
