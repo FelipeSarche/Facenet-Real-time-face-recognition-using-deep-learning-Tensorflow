@@ -120,12 +120,16 @@ with tf.Graph().as_default():
                     for H_i in HumanNames:
                         # print(H_i)
                         if HumanNames[best_class_indices[0]] == H_i:
-                            result_names = HumanNames[best_class_indices[0]]
+			    if best_class_probabilities>0.5:
+                            	result_names = HumanNames[best_class_indices[0]]
+			    else:
+				result_names = "Desconocido"
                             cv2.putText(frame, result_names, (text_x, text_y), cv2.FONT_HERSHEY_COMPLEX_SMALL,
                                         1, (0, 0, 255), thickness=1, lineType=2)
             else:
                 print('Unable to align')
         cv2.imshow('Image', frame)
+
 
         if cv2.waitKey(1000000) & 0xFF == ord('q'):
             sys.exit("Thanks")
