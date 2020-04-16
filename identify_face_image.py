@@ -11,12 +11,16 @@ import os
 import time
 import pickle
 import sys
+from datetime import datetime
+
 
 img_path='abc.jpg'
 modeldir = './model/20170511-185253.pb'
 classifier_filename = './class/classifier.pkl'
 npy='./npy'
 train_img="./train_img"
+
+prediccionSetPoint = 0.5 #valor de predicc 
 
 directorioImagenesClasificadas ="./Clasificada"
 directorioImagenesReconocidas ="./Clasificada/Reconocidas"
@@ -137,7 +141,7 @@ with tf.Graph().as_default():
                     for H_i in HumanNames:
                         # print(H_i)
                         if HumanNames[best_class_indices[0]] == H_i:
-			    if best_class_probabilities>0.5:
+			    if best_class_probabilities>prediccionSetPoint:
                             	result_names = HumanNames[best_class_indices[0]]
 			    else:
 				result_names = "Desconocido"
@@ -146,6 +150,12 @@ with tf.Graph().as_default():
             else:
                 print('Unable to align')
         cv2.imshow('Image', frame)
+	created= os.stat(img_path).st_ctime
+	if best_class_probabilities>prediccionSetPoint:
+		cv2.imwrite(directorioImagenesReconocidas + "/"  + str(datetime.fromtimestamp(created))[0:16] + " " + str(result_names) + ".png",frame)
+	else:
+		cv2.imwrite(directorioImagenesDesconocidas + "/" + str(datetime.fromtimestamp(created))[0:16] + " " + str(result_names) + ".png",frame)
+
 
 
         if cv2.waitKey(1000000) & 0xFF == ord('q'):
