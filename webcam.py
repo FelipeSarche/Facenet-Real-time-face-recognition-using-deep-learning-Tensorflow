@@ -19,16 +19,23 @@ while True:
     return_value,image = camera.read()
     gray = image
     fuente = cv2.FONT_HERSHEY_COMPLEX_SMALL
-    	
-    cv2.imshow('image',gray)
-    
+    try:	
+    	cv2.imshow('image',gray)
+    except:
+	print("No se encuentra ninguna camara")
+	break    
     pressed_key = cv2.waitKey(1)	
     if pressed_key& 0xFF == ord('s'):
         now = datetime.datetime.now()
-	print(now.strftime("%Y-%m-%d %H:%M:%S"))
-	
-	cv2.imwrite("v.jpg",image)
-	cv2.putText(gray, text='HOLA', org=(20,100), fontFace=fuente, fontScale=2, color=(0,255,0), thickness=1, lineType=cv2.LINE_8)
+	tiempoactual = now.strftime("%Y-%m-%d %H:%M:%S")
+	diaactual = now.strftime("%Y-%m-%d")
+	print(diaactual)
+	try:
+  		os.stat(directorioCapturas + "/" + diaactual)
+	except:
+  		os.mkdir(directorioCapturas + "/" + diaactual)
+	cv2.imwrite(directorioCapturas+"/" + diaactual + "/" + tiempoactual +".jpg",image)
+	cv2.putText(gray, text= tiempoactual, org=(20,100), fontFace=fuente, fontScale=2, color=(0,255,0), thickness=3, lineType=cv2.LINE_8)
 	cv2.imshow('image',gray)
 	cv2.waitKey(500)       
     if pressed_key& 0xFF == ord('q'):
