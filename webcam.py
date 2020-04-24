@@ -1,7 +1,7 @@
 import cv2
 import os
 import time
-from datetime import datetime
+import datetime
 
 camera = cv2.VideoCapture(0)
 
@@ -24,9 +24,12 @@ while True:
     
     pressed_key = cv2.waitKey(1)	
     if pressed_key& 0xFF == ord('s'):
+        now = datetime.datetime.now()
+	print(now.strftime("%Y-%m-%d %H:%M:%S"))
+	
+	cv2.imwrite("v.jpg",image)
 	cv2.putText(gray, text='HOLA', org=(20,100), fontFace=fuente, fontScale=2, color=(0,255,0), thickness=1, lineType=cv2.LINE_8)
 	cv2.imshow('image',gray)
-        cv2.imwrite('test.jpg',image)
 	cv2.waitKey(500)       
     if pressed_key& 0xFF == ord('q'):
 	break
