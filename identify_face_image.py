@@ -22,10 +22,10 @@ train_img="./train_img"
 
 prediccionSetPoint = 0.5 #valor de predicc 
 
-directorioImagenesClasificadas ="./Clasificada"
-directorioImagenesReconocidas ="./Clasificada/Reconocidas"
-directorioImagenesDesconocidas ="./Clasificada/Desconocidas"
-directorioImagenesSinClasificar = "./SinClasificar"
+directorioImagenesClasificadas ="../Clasificada"
+directorioImagenesReconocidas ="../Clasificada/Reconocidas"
+directorioImagenesDesconocidas ="../Clasificada/Desconocidas"
+directorioImagenesSinClasificar = "/run/user/1000/gvfs/smb-share:server=raspberrypi.local,share=raw/2020-04-25"
 
 
 
