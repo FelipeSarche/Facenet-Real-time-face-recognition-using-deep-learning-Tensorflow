@@ -20,7 +20,7 @@ classifier_filename = './class/classifier.pkl'
 npy='./npy'
 train_img="./train_img"
 
-prediccionSetPoint = 0.5 #valor de predicc 
+prediccionSetPoint = 0.1 #valor de predicc 
 
 directorioImagenesClasificadas ="../Clasificada"
 directorioImagenesReconocidas ="../Clasificada/Reconocidas"
@@ -29,12 +29,12 @@ directorioImagenesSinClasificar = "/run/user/1000/gvfs/smb-share:server=raspberr
 
 #listachar = directorioImagenesSinClasificar.split('/')
 #print("*******************************************    " + listachar[-1]  )
-listadirectorios = "/run/user/1000/gvfs/smb-share:server=raspberrypi.local,share=raw"
+listadirectorios = "/run/user/1000/gvfs/smb-share:server=raspberrypi.local,share=faceid"
 listadecarpetas = os.listdir(listadirectorios)
 listadecarpetas.sort()
 print(listadecarpetas)
 
-
+contadorimagenesdesconocidas=0
 try:
   os.stat(directorioImagenesClasificadas)
 except:
@@ -169,21 +169,27 @@ for carpetasacrear in listadecarpetas:
 					    if best_class_probabilities>prediccionSetPoint:
 				            	result_names = HumanNames[best_class_indices[0]]
 					    else:
-						result_names = "Desconocido"
+						contadorimagenesdesconocidas=contadorimagenesdesconocidas+1
+						result_names = "Desconocido"+str(contadorimagenesdesconocidas)
 				            cv2.putText(frame, result_names, (text_x, text_y), cv2.FONT_HERSHEY_COMPLEX_SMALL,
 				                        1, (0, 0, 255), thickness=1, lineType=2)
 			    else:
 				print('Unable to align')
+				best_class_probabilities=0
+				contadorimagenesdesconocidas=contadorimagenesdesconocidas+1
+				result_names = "Desconocido"+str(contadorimagenesdesconocidas)
 			#cv2.imshow('Image', frame)
 			listachar = directorioactual.split('/')
 			created= os.stat(directorioactual + "/" + imagensinclasificar).st_ctime
+			
 			if best_class_probabilities>prediccionSetPoint:
-				#cv2.imwrite(directorioImagenesReconocidas + "/"   + " " + str(result_names) + ".png",frame)
-				cv2.imwrite(directorioImagenesReconocidas + "/"  + listachar[-1] + "/" +str(datetime.fromtimestamp(created)) + " " + str(result_names) + ".png",frame)
+						#cv2.imwrite(directorioImagenesReconocidas + "/"   + " " + str(result_names) + ".png",frame)
+						cv2.imwrite(directorioImagenesReconocidas + "/"  + listachar[-1] + "/" +str(datetime.fromtimestamp(created)) + " " + str(result_names) + ".png",frame)
 			else:
-				cv2.imwrite(directorioImagenesDesconocidas + "/" + listachar[-1] + "/" +str(datetime.fromtimestamp(created)) + " " + str(result_names) + ".png",frame)
-				#cv2.imwrite(directorioImagenesDesconocidas + "/" + " " + str(result_names) + ".png",frame)
+						cv2.imwrite(directorioImagenesDesconocidas + "/" + listachar[-1] + "/" +str(datetime.fromtimestamp(created)) + " " + str(result_names) + ".png",frame)
+						#cv2.imwrite(directorioImagenesDesconocidas + "/" + " " + str(result_names) + ".png",frame)
 			cv2.destroyAllWindows()
+				
 
 
 if cv2.waitKey(1000000) & 0xFF == ord('q'):
