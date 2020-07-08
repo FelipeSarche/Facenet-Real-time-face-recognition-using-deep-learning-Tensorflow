@@ -29,8 +29,7 @@ directorioImagenesSinClasificar = "/home/felipe/Pictures/sinclasificar"
 
 #listachar = directorioImagenesSinClasificar.split('/')
 #print("*******************************************    " + listachar[-1]  )
-
-listadirectorios = "/run/user/1000/gvfs/smb-share:server=raspberrypi,share=faceid"
+listadirectorios = "/home/felipe/Pictures/sinclasificar"
 listadecarpetas = os.listdir(listadirectorios)
 listadecarpetas.sort()
 print(listadecarpetas)
